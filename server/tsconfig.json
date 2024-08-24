@@ -4,12 +4,17 @@
     "jsx": "preserve",
     "module": "commonjs",
     "allowJs": true,
+    "baseUrl": "src",
     "outDir": "./dist",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "skipLibCheck": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "isolatedModules": true,
+    "strictNullChecks": true,
+    "sourceMap": true
   },
   "exclude": [
     "node_modules",
