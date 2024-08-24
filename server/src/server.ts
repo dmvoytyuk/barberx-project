@@ -1,33 +1,29 @@
 import express, { Express, Request, Response } from 'express';
 import cors from 'cors';
-// import mongoose from 'mongoose';
-import dotenv from 'dotenv';
+import mongoose from 'mongoose';
 
-dotenv.config();
+import { router } from './routers/index.ts';
+import { env } from './utils/env.ts';
+import { ENV_VARS } from './constants/index.ts';
+import { connectToDB } from './utils/connectToDB.ts';
+import { errorHandler } from './middlewares/errorHandler.ts';
 
 const app: Express = express();
-const PORT: string | number = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// const uri: string =
-//   process.env.MONGODB_URI || 'mongodb://localhost:27017/your-app';
+(async () => {
+  await connectToDB();
 
-// (async () => {
-//   try {
-//     await mongoose.connect(uri);
-//     console.log('Connected to the database');
-//   } catch (error) {
-//     console.error(error);
-//   }
-// })();
+  const { PORT } = env(ENV_VARS.SERVER.PORT) || 3000;
 
-app.get('/', (_req: Request, res: Response) => {
-  res.status(200).send('Server is running');
-});
-
-app.listen(PORT, () => {
-  console.log(`Server is running on PORT: ${PORT}`);
-});
+  if (mongoose.connection.readyState) {
+    app.use(router);
+    app.listen(PORT, () => {
+      console.log(`Server is running on PORT: ${PORT}`);
+    });
+  }
+})();
+app.use(errorHandler);

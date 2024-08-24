@@ -14,11 +14,13 @@
     "emitDecoratorMetadata": true,
     "isolatedModules": true,
     "strictNullChecks": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "noEmit": true,
+    "allowImportingTsExtensions": true
+    // "paths": {
+    //   "middleware": ["middlewares/*"]
+    // }
   },
-  "exclude": [
-    "node_modules",
-    "dist",
-    "client"
-  ]
+  "exclude": ["node_modules", "dist", "client"],
+  "include": ["src/**/*.ts", "src/**/*.d.ts"]
 }
