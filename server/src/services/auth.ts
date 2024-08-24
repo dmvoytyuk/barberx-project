@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 import { ObjectId } from 'mongoose';
 
 import { Users } from '../db/models/user.ts';
-import { LoginCredentials, RegisterCredentials, User } from '../@types/User.ts';
+import { LoginCredentials, RegisterCredentials } from '../@types/User.ts';
 import { Sessions } from '../db/models/session.ts';
 import { createSession } from '../utils/createSession.ts';
 
@@ -48,4 +48,8 @@ export const getUser = async (id: ObjectId) => {
   }
 
   return user;
+};
+
+export const logoutUser = async (id: ObjectId) => {
+  await Users.findByIdAndDelete(id);
 };

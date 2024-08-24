@@ -6,7 +6,6 @@ import { router } from './routers/index.ts';
 import { env } from './utils/env.ts';
 import { ENV_VARS } from './constants/index.ts';
 import { connectToDB } from './utils/connectToDB.ts';
-import { errorHandler } from './middlewares/errorHandler.ts';
 
 const app: Express = express();
 
@@ -26,4 +25,3 @@ app.use(express.urlencoded({ extended: true }));
     });
   }
 })();
-app.use(errorHandler);

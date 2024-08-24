@@ -9,5 +9,5 @@ export const router = Router();
 
 router.get('/', statusHandler);
 router.use('/auth', authRouter);
-// router.use('/*', notFoundHandler);
-// router.use(errorHandler);
+router.use('*', notFoundHandler);
+router.use(errorHandler);
