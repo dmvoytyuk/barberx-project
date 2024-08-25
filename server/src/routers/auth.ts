@@ -1,5 +1,10 @@
 import { Router } from 'express';
-import { loginController, registerController } from '../controllers/auth.ts';
+import {
+  loginController,
+  logoutController,
+  registerController,
+} from '../controllers/auth.ts';
+
 import { controllerHandler } from '../middlewares/controllerHandler.ts';
 import { validationHandler } from '../middlewares/validationHandler.ts';
 import { loginUserSchema, registerUserSchema } from '../validation/auth.ts';
@@ -16,4 +21,5 @@ authRouter
     '/login',
     validationHandler(loginUserSchema),
     controllerHandler(loginController)
-  );
+  )
+  .post('/logout', controllerHandler(logoutController));

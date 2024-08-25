@@ -5,9 +5,9 @@ export interface IUser extends Document<ObjectId> {
   email: string;
   password: string;
   phone: string;
-  dob: Date;
-  liked?: number[];
-  disliked?: number[];
+  favorites: ObjectId[];
+  liked?: ObjectId[];
+  disliked?: ObjectId[];
 }
 
 export type RegisterCredentials = Pick<IUser, 'name' | 'email' | 'password'>;

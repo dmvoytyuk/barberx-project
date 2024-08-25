@@ -9,7 +9,7 @@ const user = new Schema<IUser>(
     email: { type: String, required: true },
     password: { type: String, required: true },
     phone: { type: String, default: null },
-    dob: { type: Date, default: null },
+    favorites: { type: [Schema.Types.ObjectId], default: [] },
     liked: { type: [Number], default: [] },
     disliked: { type: [Number], default: [] },
   },

@@ -1,9 +1,12 @@
-import { loginUser, registerUser } from '../services/auth.ts';
+import { loginUser, logoutUser, registerUser } from '../services/auth.ts';
 
 import type { Controller } from '../@types/Controller.ts';
-import { addCookies } from '../utils/handleCookies/addCookies.ts';
+import type { ObjectId } from 'mongoose';
 
-export const registerController: Controller = async (req, res) => {
+import { addCookies } from '../utils/handleCookies/addCookies.ts';
+import { removeCookies } from '../utils/handleCookies/removeCookies.ts';
+
+export const registerController: Controller = async (req, res, _next) => {
   const user = await registerUser(req.body);
 
   res.status(201).json({
@@ -13,7 +16,7 @@ export const registerController: Controller = async (req, res) => {
   });
 };
 
-export const loginController: Controller = async (req, res) => {
+export const loginController: Controller = async (req, res, _next) => {
   const session = await loginUser(req.body);
 
   addCookies(res, session);
@@ -23,4 +26,17 @@ export const loginController: Controller = async (req, res) => {
     message: 'Successfully logged in',
     data: session.accessToken,
   });
+};
+
+export const logoutController: Controller = async (req, res, _next) => {
+  const sessionId: ObjectId = req.cookies.sessionId;
+
+  if (sessionId) {
+    await logoutUser(sessionId);
+    removeCookies(res);
+    res.status(204).send({ status: 204, message: 'Successfully logged out' });
+  }
+
+  removeCookies(res);
+  res.status(204).send();
 };
