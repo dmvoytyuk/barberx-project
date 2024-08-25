@@ -1,7 +1,7 @@
-import type { NextFunction } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 
-export type Controller<T, U> = (
-  req: T,
-  res: U,
+export type Controller = (
+  req: Request,
+  res: Response,
   next: NextFunction
 ) => Promise<void> | void;

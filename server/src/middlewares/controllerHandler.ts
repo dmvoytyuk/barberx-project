@@ -1,9 +1,6 @@
 import type { Controller } from '../@types/Controller.ts';
-import type { Response } from 'express';
 
-export const controllerHandler = (
-  controller: Controller<any, Response>
-): Controller<any, Response> => {
+export const controllerHandler = (controller: Controller): Controller => {
   return async (req, res, next) => {
     try {
       await controller(req, res, next);

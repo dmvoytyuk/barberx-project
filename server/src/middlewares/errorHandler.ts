@@ -1,4 +1,4 @@
-import { ErrorRequestHandler, Request, Response } from 'express';
+import { ErrorRequestHandler } from 'express';
 import { isHttpError } from 'http-errors';
 
 export const errorHandler: ErrorRequestHandler = (err, _, res, _2) => {

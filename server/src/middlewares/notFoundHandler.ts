@@ -1,6 +1,6 @@
-import { Request, Response } from 'express';
+import type { Controller } from '../@types/Controller.ts';
 
-export const notFoundHandler = (_: Request, res: Response) => {
+export const notFoundHandler: Controller = (_, res) => {
   res.status(404).json({
     message: 'Route not found',
   });

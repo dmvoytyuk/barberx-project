@@ -1,15 +1,13 @@
 import { Router } from 'express';
-import {
-  loginController,
-  logoutController,
-  registerController,
-} from '../controllers/auth.ts';
+import { registerController } from '../controllers/auth.ts';
 import { controllerHandler } from '../middlewares/controllerHandler.ts';
-import { authorizationMiddleware } from '../middlewares/authorizationMiddleware.ts';
+import { validationHandler } from '../middlewares/validationHandler.ts';
+import { registerUserSchema } from '../validation/auth.ts';
 
 export const authRouter: Router = Router();
 
-authRouter.post('/register', controllerHandler(registerController));
-authRouter.post('/login', controllerHandler(loginController));
-authRouter.post('/logout', controllerHandler(logoutController));
-// authRouter.post('/refresh', authorizationMiddleware, controllerHandler());
+authRouter.post(
+  '/register',
+  validationHandler(registerUserSchema),
+  controllerHandler(registerController)
+);
