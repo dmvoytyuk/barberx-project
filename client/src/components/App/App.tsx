@@ -1,7 +1,13 @@
-import "./App.css";
+import React from "react";
+import { Route, Routes } from "react-router-dom";
+import HomePage from "../../pages/HomePage/HomePage.tsx";
 
-function App() {
-  return <div className="container">Hello World!</div>;
+function App(): React.ReactElement {
+  return (
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+    </Routes>
+  );
 }
 
 export default App;

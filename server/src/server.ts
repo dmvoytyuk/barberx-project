@@ -1,9 +1,9 @@
+
 import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import pino from 'pino-http';
 import cookieParser from 'cookie-parser';
-
 import { router } from './routers/index.ts';
 import { ENV_VARS } from './constants/index.ts';
 import { env } from './utils/env.ts';
@@ -23,11 +23,10 @@ app.use(
   })
 );
 
+
 (async () => {
   await connectToDB();
-
   const { PORT } = env(ENV_VARS.SERVER.PORT) || 3000;
-
   if (mongoose.connection.readyState) {
     app.use(router);
     app.listen(PORT, () => {
