@@ -1,7 +1,6 @@
 import type { Document, ObjectId } from 'mongoose';
 
-export type User = {
-  _id: ObjectId;
+export interface IUser extends Document<ObjectId> {
   name: string;
   email: string;
   password: string;
@@ -9,10 +8,8 @@ export type User = {
   dob: Date;
   liked?: number[];
   disliked?: number[];
-};
+}
 
-export interface IUser extends Omit<User, '_id'>, Document {}
+export type RegisterCredentials = Pick<IUser, 'name' | 'email' | 'password'>;
 
-export type RegisterCredentials = Pick<User, 'name' | 'email' | 'password'>;
-
-export type LoginCredentials = Pick<User, 'email' | 'password'>;
+export type LoginCredentials = Pick<IUser, 'email' | 'password'>;
