@@ -1,6 +1,5 @@
-import { Request } from 'express';
-import { User } from './User.ts';
+import type { Request } from 'express';
 
 export type IAuthRequest = Request & {
-  user?: User;
+  userId?: string;
 };

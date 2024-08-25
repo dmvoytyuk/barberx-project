@@ -1,4 +1,4 @@
-import { ObjectId } from 'mongoose';
+import type { ObjectId } from 'mongoose';
 
 export type User = {
   _id: ObjectId;
@@ -11,13 +11,9 @@ export type User = {
   disliked?: number[];
 };
 
-export type RegisterCredentials = {
-  name: string;
-  email: string;
-  password: string;
-};
+export type RegisterCredentials = Pick<User, 'name' | 'email' | 'password'>;
 
-export type LoginCredentials = Omit<RegisterCredentials, 'name'>;
+export type LoginCredentials = Pick<User, 'email' | 'password'>;
 
 // enum UserKeys {
 //   _id = '_id',

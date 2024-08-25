@@ -1,15 +1,15 @@
 import { Router } from 'express';
 import {
-  currentUserController,
+  // currentUserController,
   loginController,
   logoutController,
   registerController,
 } from '../controllers/auth.ts';
-import { controllerHandler } from '../utils/controllerHandler.ts';
+import { controllerHandler } from '../middlewares/controllerHandler.ts';
 
 export const authRouter: Router = Router();
 
 authRouter.post('/register', controllerHandler(registerController));
 authRouter.post('/login', controllerHandler(loginController));
 authRouter.post('/logout', controllerHandler(logoutController));
-authRouter.get('/user', controllerHandler(currentUserController));
+// authRouter.get('/current', controllerHandler(currentUserController));

@@ -6,6 +6,7 @@ export async function connectToDB() {
   const { DB_USER, DB_PWD, DB_URL, DB_NAME } = env(
     ...Object.values(ENV_VARS.DATABASE)
   );
+
   const connection_uri: string = `mongodb+srv://${DB_USER}:${DB_PWD}@${DB_URL}/${DB_NAME}`;
 
   try {

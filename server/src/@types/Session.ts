@@ -1,4 +1,4 @@
-import { ObjectId } from 'mongoose';
+import type { ObjectId } from 'mongoose';
 
 export type UserSession = {
   _id: ObjectId;
@@ -9,7 +9,7 @@ export type UserSession = {
   refreshTokenValidUntil: Date;
 };
 
-export type UserCookies = {
-  refreshToken: string;
-  sessionId: string;
-};
+export type UserCookies = Pick<
+  UserSession,
+  'refreshToken' | 'refreshTokenValidUntil'
+>;
