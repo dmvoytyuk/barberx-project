@@ -11,7 +11,7 @@ const user = new Schema<IUser>(
     email: { type: String, required: true },
     password: { type: String, required: true },
     phone: { type: String, default: null },
-    role: { enum: UserRole, default: UserRole.client },
+    role: { type: String, enum: UserRole, default: UserRole.client },
     favorites: { type: [Schema.Types.ObjectId], default: [] },
     liked: { type: [Number], default: [] },
     disliked: { type: [Number], default: [] },
