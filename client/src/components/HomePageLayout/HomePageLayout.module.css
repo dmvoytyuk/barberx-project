@@ -1,0 +1,9 @@
+.homePageLayout {
+  min-height: 100vh;
+  background-size: cover;
+  color: var(--color-font-primary);
+}
+
+.header {
+  padding-top: 20px;
+}

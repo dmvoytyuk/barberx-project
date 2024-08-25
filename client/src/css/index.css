@@ -1,14 +1,17 @@
-@import '../../node_modules/modern-normalize/modern-normalize.css';
+@import "../../node_modules/modern-normalize/modern-normalize.css";
 
 :root {
   font-family: Jost, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  --color-font-primary: #020b0a;
+  --color-contrast: #f5ee6d;
+  --color-bg-light: #ebece8;
+  --color-bg-primary: #d9d9d9;
 }
 
 body {
