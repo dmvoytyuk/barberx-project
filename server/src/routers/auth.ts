@@ -1,6 +1,5 @@
 import { Router } from 'express';
 import {
-  currentUserController,
   loginController,
   logoutController,
   registerController,
@@ -13,8 +12,4 @@ export const authRouter: Router = Router();
 authRouter.post('/register', controllerHandler(registerController));
 authRouter.post('/login', controllerHandler(loginController));
 authRouter.post('/logout', controllerHandler(logoutController));
-authRouter.get(
-  '/current',
-  authorizationMiddleware,
-  controllerHandler(currentUserController)
-);
+// authRouter.post('/refresh', authorizationMiddleware, controllerHandler());

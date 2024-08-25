@@ -7,10 +7,11 @@ import { Sessions } from '../db/models/session.ts';
 import { Users } from '../db/models/user.ts';
 import type { IAuthRequest } from '../@types/Request.ts';
 import type { User } from '../@types/User.ts';
-import type { Request } from 'express';
+import type { Request, Response } from 'express';
+import { logoutUser } from '../services/auth.ts';
 
-export const authorizationMiddleware: Controller = async (
-  req: Request,
+export const authorizationMiddleware: Controller<Request, Response> = async (
+  req,
   _,
   next
 ) => {
@@ -32,19 +33,23 @@ export const authorizationMiddleware: Controller = async (
     return;
   }
 
+  const user: User | null = await Users.findOne({ _id: session.userId });
+  if (!user) {
+    await logoutUser(session._id);
+    next(createHttpError(400, 'Please, log in first'));
+    return;
+  }
+
   const isAccessTokenExpired =
     new Date() > new Date(session.accessTokenValidUntil);
-
   if (isAccessTokenExpired) {
     next(
       createHttpError(
         401,
-        'Provided access token expired, please refresh or log in again'
+        'Access token expired, please refresh or log in again'
       )
     );
   }
-
-  const user: User = (await Users.findOne({ _id: session.userId }))!;
 
   (req as IAuthRequest).user = user;
 

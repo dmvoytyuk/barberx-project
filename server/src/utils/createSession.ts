@@ -1,7 +1,7 @@
 import { randomBytes } from 'crypto';
 import { ObjectId } from 'mongoose';
 
-import { FIFTEEN_MINUTES, ONE_MONTH } from '../constants/index.ts';
+import { FIFTEEN_MINUTES, ONE_MINUTE, ONE_MONTH } from '../constants/index.ts';
 import { UserSession } from '../@types/Session.ts';
 
 export const createSession = (userId: ObjectId): Omit<UserSession, '_id'> => {
@@ -12,7 +12,8 @@ export const createSession = (userId: ObjectId): Omit<UserSession, '_id'> => {
     userId,
     accessToken,
     refreshToken,
-    accessTokenValidUntil: new Date(Date.now() + FIFTEEN_MINUTES),
+    accessTokenValidUntil: new Date(Date.now() + ONE_MINUTE),
+    // accessTokenValidUntil: new Date(Date.now() + FIFTEEN_MINUTES),
     refreshTokenValidUntil: new Date(Date.now() + ONE_MONTH),
   };
 };

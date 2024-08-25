@@ -1,8 +1,7 @@
-import type { NextFunction, Request, Response } from 'express';
-import type { IAuthRequest } from './Request.ts';
+import type { NextFunction } from 'express';
 
-export type Controller = (
-  req: Request,
-  res: Response,
+export type Controller<T, U> = (
+  req: T,
+  res: U,
   next: NextFunction
 ) => Promise<void> | void;
