@@ -1,5 +1,6 @@
 import type { Request } from 'express';
+import type { User } from './User.ts';
 
-export type IAuthRequest = Request & {
-  userId?: string;
-};
+export interface IAuthRequest extends Request {
+  user?: User;
+}

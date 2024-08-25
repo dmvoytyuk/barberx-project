@@ -51,5 +51,5 @@ export const getUser = async (id: ObjectId) => {
 };
 
 export const logoutUser = async (id: ObjectId) => {
-  await Users.findByIdAndDelete(id);
+  await Sessions.findByIdAndDelete(id);
 };

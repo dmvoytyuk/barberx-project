@@ -9,7 +9,7 @@ import type { Controller } from '../@types/Controller.ts';
 
 import { addCookies } from '../utils/handleCookies/addCookies.ts';
 import { removeCookies } from '../utils/handleCookies/removeCookies.ts';
-import type { User } from '../@types/User.ts';
+import type { IAuthRequest } from '../@types/Request.ts';
 
 export const registerController: Controller = async (req, res) => {
   const user = await registerUser(req.body);
@@ -33,28 +33,16 @@ export const loginController: Controller = async (req, res) => {
   });
 };
 
-// export const currentUserController: Controller = async (req, res) => {
-//   const { userId } = req.body;
-//   // if (!req.user) {
-//   if (!userId) {
-//     res.status(400).json({ status: 400, message: 'Please, provide user id' });
-//     return;
-//   }
-
-//   // const currentUser = await getUser(req.user._id);
-//   const currentUser: User | null = await getUser(userId);
-
-//   if (!currentUser) {
-//     res.status(404).json({ status: 404, message: 'User not found' });
-//     return;
-//   }
-
-//   res.status(200).json({
-//     status: 200,
-//     message: 'Successfully retrieved data',
-//     data: currentUser,
-//   });
-// };
+export const currentUserController: Controller = async (
+  req: IAuthRequest,
+  res
+) => {
+  res.status(200).json({
+    status: 200,
+    message: 'Successfully retrieved data',
+    data: req.user,
+  });
+};
 
 export const logoutController: Controller = async (req, res) => {
   const sessionId = req.cookies.sessionId;
