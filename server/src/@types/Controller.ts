@@ -4,4 +4,4 @@ export type Controller = (
   req: Request,
   res: Response,
   next: NextFunction
-) => Promise<unknown> | void;
+) => Promise<void> | void;

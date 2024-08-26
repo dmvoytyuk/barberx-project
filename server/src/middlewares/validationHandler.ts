@@ -4,7 +4,7 @@ import createHttpError from 'http-errors';
 
 export const validationHandler =
   (schema: ObjectSchema): Controller =>
-  async (req, _, next) => {
+  async (req, _res, next) => {
     try {
       await schema.validateAsync(req.body, {
         abortEarly: false,

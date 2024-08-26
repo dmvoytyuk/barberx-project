@@ -15,6 +15,7 @@ app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(router);
 app.use(
   pino({
     transport: {
@@ -28,7 +29,6 @@ app.use(
   await connectToDB();
   const { PORT } = env(ENV_VARS.SERVER.PORT) || 3000;
   if (mongoose.connection.readyState) {
-    app.use(router);
     app.listen(PORT, () => {
       console.log(`Server is running on PORT: ${PORT}`);
     });

@@ -1,6 +1,6 @@
 import type { Document, ObjectId } from 'mongoose';
 
-export interface ISession extends Document {
+export interface ISession extends Document<ObjectId> {
   userId: ObjectId;
   accessToken: string;
   refreshToken: string;
@@ -8,7 +8,7 @@ export interface ISession extends Document {
   refreshTokenValidUntil: Date;
 }
 
-export type UserCookies = Pick<
-  ISession,
-  'refreshToken' | 'refreshTokenValidUntil'
->;
+// export type UserCookies = Pick<
+//   ISession,
+//   'refreshToken' | 'refreshTokenValidUntil'
+// >;
