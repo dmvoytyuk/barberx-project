@@ -45,18 +45,18 @@ export const logoutUser = async (id: ObjectId) => {
 
 export const refreshSession = async (
   sessionId: ObjectId,
-  sessionToken: string
+  refreshToken: string
 ) => {
   const currentSession = await Sessions.findOne({
     _id: sessionId,
-    sessionToken,
+    refreshToken,
   });
   if (!currentSession) {
     throw createHttpError(401, 'Session not found. Please, log in');
   }
 
   const isSessionTokenExpired =
-    new Date() > new Date(currentSession.sessionTokenValidUntil);
+    new Date() > new Date(currentSession.refreshTokenValidUntil);
   if (isSessionTokenExpired) {
     throw createHttpError(401, 'Session token expired. Please, log in');
   }

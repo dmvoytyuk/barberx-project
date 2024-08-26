@@ -22,7 +22,7 @@ export const authorizationMiddleware: Controller = async (req, res, next) => {
 
   const session = await Sessions.findOne({ accessToken });
   if (!session) {
-    next(createHttpError(401, 'Session not found. Please, log in again'));
+    next(createHttpError(401, 'Session not found. Please'));
     return;
   }
 
@@ -30,7 +30,7 @@ export const authorizationMiddleware: Controller = async (req, res, next) => {
   if (!user) {
     await logoutUser(session._id);
     removeCookies(res);
-    next(createHttpError(400, 'Please, log in first'));
+    next(createHttpError(400, 'Please, log in'));
     return;
   }
 

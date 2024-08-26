@@ -7,7 +7,7 @@ export const addCookies = (res: Response, session: ISession): void => {
     httpOnly: true,
     expires: new Date(Date.now() + ONE_MONTH),
   });
-  res.cookie(Token.sessionToken, session.sessionToken, {
+  res.cookie(Token.refreshToken, session.refreshToken, {
     httpOnly: true,
     expires: new Date(Date.now() + ONE_MONTH),
   });
