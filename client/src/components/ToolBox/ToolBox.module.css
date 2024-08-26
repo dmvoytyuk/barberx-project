@@ -1,0 +1,16 @@
+.toolBox {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  margin-bottom: 40px;
+  justify-content: space-evenly;
+  gap: 15px;
+}
+
+.toolBoxItem {
+  background: #000;
+  padding: 4px;
+  color: #fff;
+  width: 100%;
+  text-align: center;
+}

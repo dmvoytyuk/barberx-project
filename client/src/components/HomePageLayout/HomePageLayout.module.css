@@ -1,9 +1,33 @@
 .homePageLayout {
-  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 100vh;
   background-size: cover;
-  color: var(--color-font-primary);
 }
 
-.header {
+.homePageHeader {
   padding-top: 20px;
+}
+
+.homePageMain {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: max-content;
+}
+
+.homePageMainTitle {
+  font-size: 32px;
+  line-height: 1.5;
+  letter-spacing: -0.08em;
+  color: #fff;
+  margin-bottom: 16px;
+}
+
+.homePageFooter {
+  width: 100%;
 }
