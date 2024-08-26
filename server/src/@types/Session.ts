@@ -3,12 +3,15 @@ import type { Document, ObjectId } from 'mongoose';
 export interface ISession extends Document<ObjectId> {
   userId: ObjectId;
   accessToken: string;
-  refreshToken: string;
+  sessionToken: string;
   accessTokenValidUntil: Date;
-  refreshTokenValidUntil: Date;
+  sessionTokenValidUntil: Date;
 }
 
-// export type UserCookies = Pick<
-//   ISession,
-//   'refreshToken' | 'refreshTokenValidUntil'
-// >;
+export enum Token {
+  sessionId = 'sessionId',
+  accessToken = 'accessToken',
+  sessionToken = 'sessionToken',
+  accessTokenValidUntil = 'accessTokenValidUntil',
+  sessionTokenValidUntil = 'sessionTokenValidUntil',
+}
