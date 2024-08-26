@@ -9,7 +9,7 @@ import { controllerHandler } from '../middlewares/controllerHandler.ts';
 import { validationHandler } from '../middlewares/validationHandler.ts';
 import { loginUserSchema, registerUserSchema } from '../validation/auth.ts';
 
-export const authRouter: Router = Router();
+export const authRouter = Router();
 
 authRouter
   .post(
