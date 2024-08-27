@@ -39,7 +39,8 @@ export const logoutController: Controller = async (req, res, _next) => {
   if (sessionId) {
     await logoutUser(sessionId);
     removeCookies(res);
-    res.status(204).send({ status: 204, message: 'Successfully logged out' });
+    res.status(204).send();
+    return;
   }
 
   removeCookies(res);
