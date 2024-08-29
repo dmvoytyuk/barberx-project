@@ -1,7 +1,9 @@
 import { Response } from 'express';
+
 import { ISession } from '../../@types/Session.interface.ts';
-import { ONE_MONTH } from '../../constants/index.ts';
 import { Token } from '../../@types/enums/Token.enum.ts';
+
+import { ONE_MONTH } from '../../constants/index.ts';
 
 export const addCookies = (res: Response, session: ISession): void => {
   res.cookie(Token.sessionId, session._id, {
