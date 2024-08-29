@@ -1,5 +1,7 @@
-import { UserRole, type IUser } from '../@types/User.ts';
 import joi from 'joi';
+
+import { UserRole } from '../@types/enums/UserRole.enum.ts';
+import type { IUser } from '../@types/User.interface.ts';
 
 export const updateUserSchema = joi.object<any, false, Partial<IUser>>({
   name: joi.string().min(3).max(32),

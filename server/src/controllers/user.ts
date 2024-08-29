@@ -1,5 +1,5 @@
 import type { Controller } from '../@types/Controller.ts';
-import type { IUser } from '../@types/User.ts';
+import type { IUser } from '../@types/User.interface.ts';
 
 export const currentUserController: Controller = async (req, res, _next) => {
   const { _id, password, ...rest } = req.app.locals.user as IUser;
