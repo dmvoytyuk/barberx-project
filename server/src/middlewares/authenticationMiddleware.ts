@@ -2,12 +2,12 @@ import createHttpError from 'http-errors';
 
 import type { Controller } from '../@types/Controller.ts';
 
-import { Session } from '../db/models/session.ts';
-import { User } from '../db/models/user.ts';
+import { SessionModel } from '../db/models/session.ts';
+import { UserModel } from '../db/models/user.ts';
 import { logoutUser } from '../services/auth.ts';
 import { removeCookies } from '../utils/handleCookies/removeCookies.ts';
 
-export const authorizationMiddleware: Controller = async (req, res, next) => {
+export const authenticationMiddleware: Controller = async (req, res, next) => {
   const authHeader = req.get('Authorization');
   if (!authHeader) {
     return next(createHttpError(401, 'Please, provide Authorization header'));
@@ -20,12 +20,12 @@ export const authorizationMiddleware: Controller = async (req, res, next) => {
     );
   }
 
-  const session = await Session.findOne({ accessToken });
+  const session = await SessionModel.findOne({ accessToken });
   if (!session) {
     return next(createHttpError(401, 'Session not found. Please, log in'));
   }
 
-  const user = await User.findOne({ _id: session.userId });
+  const user = await UserModel.findOne({ _id: session.userId });
   if (!user) {
     await logoutUser(session._id);
     removeCookies(res);

@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import { ENV_VARS } from '../constants/index.ts';
 import { env } from './env.ts';
+import { cleanUpExpiredSessions } from './handleData/cleanUpExpiredSessions.ts';
 
 export async function connectToDB() {
   const { DB_USER, DB_PWD, DB_URL, DB_NAME } = env(
@@ -13,6 +14,8 @@ export async function connectToDB() {
     if (mongoose.connection.readyState) return;
     await mongoose.connect(connection_uri);
     console.log('Connected to the database');
+
+    await cleanUpExpiredSessions();
   } catch (e) {
     console.error(e);
   }

@@ -1,7 +1,8 @@
-import { model, Schema, type Model } from 'mongoose';
+import { model, Schema } from 'mongoose';
+
 import type { ISession } from '../../@types/Session.interface.ts';
 
-const session = new Schema<ISession, Model<ISession>>(
+const session = new Schema<ISession>(
   {
     userId: { type: Schema.Types.ObjectId, ref: 'users' },
     accessToken: { type: String, required: true },
@@ -12,4 +13,8 @@ const session = new Schema<ISession, Model<ISession>>(
   { timestamps: true, versionKey: false }
 );
 
-export const Session: Model<ISession> = model<ISession>('sessions', session);
+session.methods.toJSON = function () {
+  return this.toObject();
+};
+
+export const SessionModel = model<ISession>('sessions', session);

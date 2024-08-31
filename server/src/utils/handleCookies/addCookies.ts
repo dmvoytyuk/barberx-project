@@ -4,8 +4,12 @@ import { ISession } from '../../@types/Session.interface.ts';
 import { Token } from '../../@types/enums/Token.enum.ts';
 
 import { ONE_MONTH } from '../../constants/index.ts';
+import type { HydratedDocument } from 'mongoose';
 
-export const addCookies = (res: Response, session: ISession): void => {
+export const addCookies = (
+  res: Response,
+  session: HydratedDocument<ISession>
+): void => {
   res.cookie(Token.sessionId, session._id, {
     httpOnly: true,
     expires: new Date(Date.now() + ONE_MONTH),

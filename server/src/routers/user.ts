@@ -4,7 +4,7 @@ import {
   currentUserController,
   updateUserController,
 } from '../controllers/user.ts';
-import { authorizationMiddleware } from '../middlewares/authorizationMiddleware.ts';
+import { authenticationMiddleware } from '../middlewares/authenticationMiddleware.ts';
 import { validationHandler } from '../middlewares/validationHandler.ts';
 import { updateUserSchema } from '../validation/user.ts';
 
@@ -12,7 +12,7 @@ export const userRouter = Router();
 
 userRouter.get(
   '/current',
-  authorizationMiddleware,
+  authenticationMiddleware,
   controllerHandler(currentUserController)
 );
 

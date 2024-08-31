@@ -1,57 +1,61 @@
 import createHttpError from 'http-errors';
 import bcrypt from 'bcryptjs';
 
-import type { ObjectId } from 'mongoose';
+import { Types } from 'mongoose';
 import type { LoginCredentials } from '../@types/LoginCredentials.type.ts';
 import type { RegisterCredentials } from '../@types/RegisterCredentials.type.ts';
 
-import { User } from '../db/models/user.ts';
-import { Session } from '../db/models/session.ts';
+import { UserModel } from '../db/models/user.ts';
+import { SessionModel } from '../db/models/session.ts';
 import { createSession } from '../utils/createSession.ts';
 
 export const registerUser = async (payload: RegisterCredentials) => {
-  const isAlreadyInUse = await User.findOne({ email: payload.email });
-  if (isAlreadyInUse) {
+  const isEmailInUse = await UserModel.findOne({ email: payload.email });
+  if (isEmailInUse) {
     throw createHttpError(409, 'Email is already in use');
   }
 
   const password = await bcrypt.hash(payload.password, 10);
 
-  return await User.create({
+  return await UserModel.create({
     ...payload,
     password,
   });
 };
 
 export const loginUser = async (payload: LoginCredentials) => {
-  const user = await User.findOne({ email: payload.email });
+  const user = await UserModel.findOne({ email: payload.email });
 
   if (!user) {
     throw createHttpError(404, 'User not found');
   }
 
-  const isPasswordCorrect = bcrypt.compare(payload.password, user.password);
+  const isPasswordCorrect = await bcrypt.compare(
+    payload.password,
+    user.password
+  );
 
   if (!isPasswordCorrect) {
     throw createHttpError(401, 'Unauthorized');
   }
-  await Session.findOneAndDelete({ userId: user._id });
+  await SessionModel.findOneAndDelete({ userId: user._id });
 
-  return await Session.create(createSession(user._id));
+  return await SessionModel.create(createSession(user._id));
 };
 
-export const logoutUser = async (id: ObjectId) => {
-  await Session.findByIdAndDelete(id);
+export const logoutUser = async (id: Types.ObjectId) => {
+  await SessionModel.findByIdAndDelete(id);
 };
 
 export const refreshSession = async (
-  sessionId: ObjectId,
+  sessionId: Types.ObjectId,
   refreshToken: string
 ) => {
-  const currentSession = await Session.findOne({
+  const currentSession = await SessionModel.findOne({
     _id: sessionId,
     refreshToken,
   });
+
   if (!currentSession) {
     throw createHttpError(401, 'Session not found. Please, log in');
   }
@@ -62,5 +66,5 @@ export const refreshSession = async (
     throw createHttpError(401, 'Session token expired. Please, log in');
   }
 
-  return await Session.create(createSession(currentSession.userId));
+  return await SessionModel.create(createSession(currentSession.userId));
 };

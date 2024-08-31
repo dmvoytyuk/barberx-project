@@ -6,7 +6,6 @@ import {
 } from '../services/auth.ts';
 
 import type { Controller } from '../@types/Controller.ts';
-import type { ObjectId } from 'mongoose';
 
 import { addCookies } from '../utils/handleCookies/addCookies.ts';
 import { removeCookies } from '../utils/handleCookies/removeCookies.ts';
@@ -34,7 +33,7 @@ export const loginController: Controller = async (req, res, _next) => {
 };
 
 export const logoutController: Controller = async (req, res, _next) => {
-  const sessionId: ObjectId = req.cookies.sessionId;
+  const sessionId = req.cookies.sessionId;
 
   if (sessionId) {
     await logoutUser(sessionId);
