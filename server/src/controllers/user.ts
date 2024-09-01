@@ -1,10 +1,10 @@
-import type { Controller } from '../@types/Controller.ts';
+import type { Controller } from '../@types/Controller.type.ts';
 
 export const currentUserController: Controller = async (req, res, _next) => {
   res.status(200).json({
     status: 200,
     message: 'Successfully retrieved data',
-    data: req.app.locals.user,
+    data: req.session.user,
   });
 };
 

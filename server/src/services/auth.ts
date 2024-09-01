@@ -38,9 +38,8 @@ export const loginUser = async (payload: LoginCredentials) => {
   if (!isPasswordCorrect) {
     throw createHttpError(401, 'Unauthorized');
   }
-  await SessionModel.findOneAndDelete({ userId: user._id });
-
-  return await SessionModel.create(createSession(user._id));
+  // await SessionModel.findOneAndDelete({ userId: user._id });
+  return user;
 };
 
 export const logoutUser = async (id: Types.ObjectId) => {

@@ -4,15 +4,15 @@ import {
   currentUserController,
   updateUserController,
 } from '../controllers/user.ts';
-import { authenticationMiddleware } from '../middlewares/authenticationMiddleware.ts';
 import { validationHandler } from '../middlewares/validationHandler.ts';
 import { updateUserSchema } from '../validation/user.ts';
+import { alternativeAuthenticate } from '../middlewares/altAuthenticate.ts';
 
 export const userRouter = Router();
 
 userRouter.get(
   '/current',
-  authenticationMiddleware,
+  alternativeAuthenticate,
   controllerHandler(currentUserController)
 );
 

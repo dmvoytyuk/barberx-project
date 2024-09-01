@@ -5,3 +5,7 @@ export enum Token {
   accessTokenValidUntil = 'accessTokenValidUntil',
   refreshTokenValidUntil = 'refreshTokenValidUntil',
 }
+
+export enum TokenType {
+  bearer = 'Bearer',
+}

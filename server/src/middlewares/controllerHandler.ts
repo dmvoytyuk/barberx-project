@@ -1,4 +1,4 @@
-import type { Controller } from '../@types/Controller.ts';
+import type { Controller } from '../@types/Controller.type.ts';
 
 export const controllerHandler = (controller: Controller): Controller => {
   return async (req, res, next) => {

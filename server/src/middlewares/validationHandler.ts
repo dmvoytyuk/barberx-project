@@ -1,4 +1,4 @@
-import type { Controller } from '../@types/Controller.ts';
+import type { Controller } from '../@types/Controller.type.ts';
 import { ObjectSchema, ValidationError } from 'joi';
 import createHttpError from 'http-errors';
 

@@ -1,6 +1,6 @@
 import createHttpError from 'http-errors';
 
-import type { Controller } from '../@types/Controller.ts';
+import type { Controller } from '../@types/Controller.type.ts';
 
 import { SessionModel } from '../db/models/session.ts';
 import { UserModel } from '../db/models/user.ts';
