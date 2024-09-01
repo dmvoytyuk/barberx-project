@@ -11,5 +11,6 @@ export const sessionMiddleware = session({
   saveUninitialized: false,
   name: Cookie.sessionId,
   resave: false,
+  rolling: true,
   cookie: { secure: false, httpOnly: true, maxAge: FIVE_MINUTES },
 });
