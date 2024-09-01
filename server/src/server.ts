@@ -6,8 +6,7 @@ import env from './utils/env.ts';
 import router from './routers/index.ts';
 import connectToDB from './db/connectToDB.ts';
 import sessionHandler from './handlers/sessionHandler.ts';
-
-import { ENV_VARS } from './constants/index.ts';
+import { ENV_VARS } from './@types/enums/ENV.enum.ts';
 
 const app = express();
 
@@ -21,7 +20,7 @@ app.use(router);
 (async () => {
   await connectToDB();
 
-  const { PORT } = env(ENV_VARS.SERVER.PORT) || 3000;
+  const PORT = env(ENV_VARS.PORT) || 3000;
 
   if (mongoose.connection.readyState) {
     app.listen(PORT, () => {
