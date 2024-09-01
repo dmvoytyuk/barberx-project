@@ -1,6 +1,6 @@
 import type { Controller } from '../@types/Controller.type.ts';
 
-export const controllerHandler = (controller: Controller): Controller => {
+const controllerWrapper = (controller: Controller): Controller => {
   return async (req, res, next) => {
     try {
       await controller(req, res, next);
@@ -9,3 +9,5 @@ export const controllerHandler = (controller: Controller): Controller => {
     }
   };
 };
+
+export default controllerWrapper;

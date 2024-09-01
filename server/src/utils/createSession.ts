@@ -1,24 +1,14 @@
 import { randomBytes } from 'crypto';
-import { Types } from 'mongoose';
 
-import {
-  FIFTEEN_MINUTES,
-  FIVE_MINUTES,
-  ONE_MINUTE,
-  ONE_MONTH,
-} from '../constants/index.ts';
+import { FIFTEEN_MINUTES } from '../constants/index.ts';
 
-export const createSession = (userId: Types.ObjectId) => {
+const createSession = () => {
   const accessToken = randomBytes(30).toString('base64');
-  const refreshToken = randomBytes(30).toString('base64');
 
   return {
-    userId,
     accessToken,
-    refreshToken,
-    accessTokenValidUntil: new Date(Date.now() + ONE_MINUTE), // for testing purposes
-    // accessTokenValidUntil: new Date(Date.now() + FIFTEEN_MINUTES),
-    // refreshTokenValidUntil: new Date(Date.now() + FIVE_MINUTES),
-    refreshTokenValidUntil: new Date(Date.now() + ONE_MONTH),
+    accessTokenValidUntil: new Date(Date.now() + FIFTEEN_MINUTES),
   };
 };
+
+export default createSession;

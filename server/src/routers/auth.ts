@@ -1,27 +1,26 @@
 import { Router } from 'express';
-import {
-  loginController,
-  logoutController,
-  refreshController,
-  registerController,
-} from '../controllers/auth.ts';
 
-import { controllerHandler } from '../middlewares/controllerHandler.ts';
-import { validationHandler } from '../middlewares/validationHandler.ts';
-import { loginUserSchema, registerUserSchema } from '../validation/auth.ts';
+import validateBody from '../middlewares/validateBody.ts';
+import validationSchema from '../validation/auth.ts';
+import controllerWrapper from '../handlers/controllerWrapper.ts';
+import authController from '../controllers/auth.ts';
 
-export const authRouter = Router();
+const authRouter = Router();
 
-authRouter
-  .post(
-    '/register',
-    validationHandler(registerUserSchema),
-    controllerHandler(registerController)
-  )
-  .post(
-    '/login',
-    validationHandler(loginUserSchema),
-    controllerHandler(loginController)
-  )
-  .post('/logout', controllerHandler(logoutController))
-  .post('/refresh', controllerHandler(refreshController));
+authRouter.post(
+  '/register',
+  validateBody(validationSchema.register),
+  controllerWrapper(authController.register)
+);
+
+authRouter.post(
+  '/login',
+  validateBody(validationSchema.login),
+  controllerWrapper(authController.login)
+);
+
+authRouter.post('/logout', controllerWrapper(authController.logout));
+
+authRouter.post('/refresh', controllerWrapper(authController.refresh));
+
+export default authRouter;

@@ -1,8 +1,9 @@
 import mongoose from 'mongoose';
-import { ENV_VARS } from '../constants/index.ts';
-import { env } from './env.ts';
+import env from '../utils/env.ts';
 
-export async function connectToDB() {
+import { ENV_VARS } from '../constants/index.ts';
+
+const connectToDB = async () => {
   const { DB_USER, DB_PWD, DB_URL, DB_NAME } = env(
     ...Object.values(ENV_VARS.DATABASE)
   );
@@ -16,4 +17,6 @@ export async function connectToDB() {
   } catch (e) {
     console.error(e);
   }
-}
+};
+
+export default connectToDB;

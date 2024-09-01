@@ -5,11 +5,9 @@ import { Types } from 'mongoose';
 import type { LoginCredentials } from '../@types/LoginCredentials.type.ts';
 import type { RegisterCredentials } from '../@types/RegisterCredentials.type.ts';
 
-import { UserModel } from '../db/models/user.ts';
-import { SessionModel } from '../db/models/session.ts';
-import { createSession } from '../utils/createSession.ts';
+import UserModel from '../db/models/user.ts';
 
-export const registerUser = async (payload: RegisterCredentials) => {
+const register = async (payload: RegisterCredentials) => {
   const isEmailInUse = await UserModel.findOne({ email: payload.email });
   if (isEmailInUse) {
     throw createHttpError(409, 'Email is already in use');
@@ -23,7 +21,7 @@ export const registerUser = async (payload: RegisterCredentials) => {
   });
 };
 
-export const loginUser = async (payload: LoginCredentials) => {
+const login = async (payload: LoginCredentials) => {
   const user = await UserModel.findOne({ email: payload.email });
 
   if (!user) {
@@ -38,32 +36,7 @@ export const loginUser = async (payload: LoginCredentials) => {
   if (!isPasswordCorrect) {
     throw createHttpError(401, 'Unauthorized');
   }
-  // await SessionModel.findOneAndDelete({ userId: user._id });
   return user;
 };
 
-export const logoutUser = async (id: Types.ObjectId) => {
-  await SessionModel.findByIdAndDelete(id);
-};
-
-export const refreshSession = async (
-  sessionId: Types.ObjectId,
-  refreshToken: string
-) => {
-  const currentSession = await SessionModel.findOne({
-    _id: sessionId,
-    refreshToken,
-  });
-
-  if (!currentSession) {
-    throw createHttpError(401, 'Session not found. Please, log in');
-  }
-
-  const isSessionTokenExpired =
-    new Date() > new Date(currentSession.refreshTokenValidUntil);
-  if (isSessionTokenExpired) {
-    throw createHttpError(401, 'Session token expired. Please, log in');
-  }
-
-  return await SessionModel.create(createSession(currentSession.userId));
-};
+export default { register, login };

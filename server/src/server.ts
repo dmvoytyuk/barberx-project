@@ -1,31 +1,22 @@
 import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
-// import pino from 'pino-http';
-// import cookieParser from 'cookie-parser';
 
-import { router } from './routers/index.ts';
+import env from './utils/env.ts';
+import router from './routers/index.ts';
+import connectToDB from './db/connectToDB.ts';
+import sessionHandler from './handlers/sessionHandler.ts';
+
 import { ENV_VARS } from './constants/index.ts';
-import { env } from './utils/env.ts';
-import { connectToDB } from './utils/connectToDB.ts';
-import { sessionMiddleware } from './middlewares/sessionMiddleware.ts';
 
 const app = express();
-app.set('trust proxy', 1);
 
-app.use(
-  sessionMiddleware,
-  // pino({
-  //   transport: {
-  //     target: 'pino-pretty',
-  //   },
-  // }),
-  cors(),
-  // cookieParser(),
-  express.json(),
-  express.urlencoded({ extended: true }),
-  router
-);
+app.set('trust proxy', 1);
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(sessionHandler);
+app.use(router);
 
 (async () => {
   await connectToDB();
