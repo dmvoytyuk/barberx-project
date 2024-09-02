@@ -26,7 +26,6 @@ app.use(
 
 (async () => {
   await connectToDB();
-
   const { PORT } = env(ENV_VARS.SERVER.PORT) || 3000;
 
   if (mongoose.connection.readyState) {
