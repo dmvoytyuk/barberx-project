@@ -27,4 +27,4 @@ user.methods.toJSON = function () {
   return obj;
 };
 
-export const UserModel = model<IUser>('users', user);
+export default model<IUser>('users', user);

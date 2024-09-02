@@ -1,17 +1,14 @@
-import {
-  loginUser,
-  logoutUser,
-  refreshSession,
-  registerUser,
-} from '../services/auth.ts';
+import userService from '../services/auth.ts';
+import createHttpError from 'http-errors';
 
-import type { Controller } from '../@types/Controller.ts';
+import type { Controller } from '../@types/Controller.type.ts';
+import { Cookie } from '../@types/enums/Cookie.enum.ts';
 
-import { addCookies } from '../utils/handleCookies/addCookies.ts';
-import { removeCookies } from '../utils/handleCookies/removeCookies.ts';
+import createSession from '../utils/createSession.ts';
+import testToken from '../utils/testToken.ts';
 
-export const registerController: Controller = async (req, res, _next) => {
-  const user = await registerUser(req.body);
+const register: Controller = async (req, res, _next) => {
+  const user = await userService.register(req.body);
 
   res.status(201).json({
     status: 201,
@@ -20,42 +17,73 @@ export const registerController: Controller = async (req, res, _next) => {
   });
 };
 
-export const loginController: Controller = async (req, res, _next) => {
-  const session = await loginUser(req.body);
+const login: Controller = async (req, res, _next) => {
+  const user = await userService.login(req.body);
+  const { accessToken, accessTokenValidUntil } = createSession();
 
-  addCookies(res, session);
+  req.session.user = user;
+  req.session.auth = {
+    accessToken,
+    accessTokenValidUntil,
+  };
 
   res.status(200).json({
     status: 200,
     message: 'Successfully logged in',
-    data: session.accessToken,
+    data: req.session.auth.accessToken,
   });
 };
 
-export const logoutController: Controller = async (req, res, _next) => {
-  const sessionId = req.cookies.sessionId;
+const logout: Controller = async (req, res, next) => {
+  req.session.destroy((err) => {
+    if (err) next(err);
 
-  if (sessionId) {
-    await logoutUser(sessionId);
-    removeCookies(res);
-    res.status(204).send();
+    res.clearCookie(Cookie.sessionId, { path: '/' });
+    res.redirect(200, '/');
+  });
+};
+
+const refresh: Controller = async (req, res, next) => {
+  if (!req.session.auth || !req.session.user) {
+    next(createHttpError(401, 'Unauthorized'));
+    return;
+  }
+  const user = req.session.user;
+
+  const { authHeader, isBearer, isMatch } = testToken(req);
+
+  if (!authHeader) {
+    next(createHttpError(401, 'Provide Authorization header'));
     return;
   }
 
-  removeCookies(res);
-  res.status(204).send();
-};
+  if (!isBearer) {
+    next(createHttpError(401, 'Access token must be of type Bearer'));
+    return;
+  }
 
-export const refreshController: Controller = async (req, res, _next) => {
-  const { sessionId, refreshToken } = req.cookies;
+  if (!isMatch) {
+    next(createHttpError(401, 'Access token damaged or invalid'));
+    return;
+  }
 
-  const session = await refreshSession(sessionId, refreshToken);
+  req.session.regenerate((err) => {
+    if (err) next(err);
 
-  addCookies(res, session);
+    const { accessToken, accessTokenValidUntil } = createSession();
 
-  res.status(200).json({
-    status: 200,
-    message: 'Successfully refreshed user session',
-    data: session.accessToken,
+    req.session.user = user;
+    req.session.auth = {
+      accessToken,
+      accessTokenValidUntil,
+    };
+
+    res.status(200).json({
+      status: 200,
+      message: 'User session has been refreshed',
+      data: accessToken,
+    });
   });
 };
+
+export default { register, login, logout, refresh };

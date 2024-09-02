@@ -1,23 +1,24 @@
 import { Router } from 'express';
-import { controllerHandler } from '../middlewares/controllerHandler.ts';
-import {
-  currentUserController,
-  updateUserController,
-} from '../controllers/user.ts';
-import { authenticationMiddleware } from '../middlewares/authenticationMiddleware.ts';
-import { validationHandler } from '../middlewares/validationHandler.ts';
-import { updateUserSchema } from '../validation/user.ts';
 
-export const userRouter = Router();
+import authentication from '../middlewares/authentication.ts';
+import controllerWrapper from '../handlers/controllerWrapper.ts';
+import userController from '../controllers/user.ts';
+import validateBody from '../middlewares/validateBody.ts';
+import validationSchema from '../validation/user.ts';
+
+const userRouter = Router();
 
 userRouter.get(
   '/current',
-  authenticationMiddleware,
-  controllerHandler(currentUserController)
+  authentication,
+  controllerWrapper(userController.current)
 );
 
 userRouter.patch(
   '/update',
-  validationHandler(updateUserSchema),
-  controllerHandler(updateUserController)
+  authentication,
+  validateBody(validationSchema.update),
+  controllerWrapper(userController.update)
 );
+
+export default userRouter;

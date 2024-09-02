@@ -2,7 +2,7 @@ import { isHttpError } from 'http-errors';
 
 import type { ErrorRequestHandler } from 'express';
 
-export const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
+const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
   if (isHttpError(err)) {
     res.status(err.statusCode).json({
       status: err.statusCode,
@@ -18,3 +18,5 @@ export const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
     data: err,
   });
 };
+
+export default errorHandler;
