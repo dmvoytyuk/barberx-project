@@ -1,6 +1,6 @@
 import { model, Schema } from 'mongoose';
 
-import type { IUser } from '../../@types/User.interface.ts';
+import type { IUser } from '../../@types/IUser.interface.ts';
 
 import { UserRole } from '../../@types/enums/UserRole.enum.ts';
 
@@ -22,7 +22,7 @@ const user = new Schema<IUser>(
 );
 
 user.methods.toJSON = function () {
-  const obj = this.toObject();
+  const obj = this.toObject({ flattenObjectIds: true });
   delete obj.password;
   return obj;
 };

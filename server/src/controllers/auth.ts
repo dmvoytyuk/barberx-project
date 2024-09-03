@@ -1,11 +1,8 @@
 import userService from '../services/auth.ts';
 import createHttpError from 'http-errors';
 
+import { Token } from '../@types/enums/Token.enum.ts';
 import type { Controller } from '../@types/Controller.type.ts';
-import { Cookie } from '../@types/enums/Cookie.enum.ts';
-
-import createSession from '../utils/createSession.ts';
-import testToken from '../utils/testToken.ts';
 
 const register: Controller = async (req, res, _next) => {
   const user = await userService.register(req.body);
@@ -19,13 +16,10 @@ const register: Controller = async (req, res, _next) => {
 
 const login: Controller = async (req, res, _next) => {
   const user = await userService.login(req.body);
-  const { accessToken, accessTokenValidUntil } = createSession();
 
-  req.session.user = user;
-  req.session.auth = {
-    accessToken,
-    accessTokenValidUntil,
-  };
+  req.session.user = user.toJSON();
+
+  await req.session.login();
 
   res.status(200).json({
     status: 200,
@@ -34,55 +28,27 @@ const login: Controller = async (req, res, _next) => {
   });
 };
 
-const logout: Controller = async (req, res, next) => {
-  req.session.destroy((err) => {
-    if (err) next(err);
-
-    res.clearCookie(Cookie.sessionId, { path: '/' });
-    res.redirect(200, '/');
-  });
+const logout: Controller = async (req, res, _next) => {
+  await req.session.logout();
+  res.redirect(200, '/');
 };
 
 const refresh: Controller = async (req, res, next) => {
-  if (!req.session.auth || !req.session.user) {
+  const auth = req.session.auth;
+  if (
+    !auth.hasOwnProperty(Token.accessToken) ||
+    !auth.hasOwnProperty(Token.accessTokenValidUntil)
+  ) {
     next(createHttpError(401, 'Unauthorized'));
     return;
   }
-  const user = req.session.user;
 
-  const { authHeader, isBearer, isMatch } = testToken(req);
+  await req.session.refresh();
 
-  if (!authHeader) {
-    next(createHttpError(401, 'Provide Authorization header'));
-    return;
-  }
-
-  if (!isBearer) {
-    next(createHttpError(401, 'Access token must be of type Bearer'));
-    return;
-  }
-
-  if (!isMatch) {
-    next(createHttpError(401, 'Access token damaged or invalid'));
-    return;
-  }
-
-  req.session.regenerate((err) => {
-    if (err) next(err);
-
-    const { accessToken, accessTokenValidUntil } = createSession();
-
-    req.session.user = user;
-    req.session.auth = {
-      accessToken,
-      accessTokenValidUntil,
-    };
-
-    res.status(200).json({
-      status: 200,
-      message: 'User session has been refreshed',
-      data: accessToken,
-    });
+  res.status(200).json({
+    status: 200,
+    message: 'User session has been refreshed',
+    data: req.session.auth.accessToken,
   });
 };
 

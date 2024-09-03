@@ -1,4 +1,4 @@
-import type { Model, Types } from 'mongoose';
+import type { Types } from 'mongoose';
 import type { UserRole } from './enums/UserRole.enum.ts';
 
 export interface IUser {

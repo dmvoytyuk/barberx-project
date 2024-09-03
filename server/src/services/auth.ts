@@ -1,7 +1,6 @@
 import createHttpError from 'http-errors';
 import bcrypt from 'bcryptjs';
 
-import { Types } from 'mongoose';
 import type { LoginCredentials } from '../@types/LoginCredentials.type.ts';
 import type { RegisterCredentials } from '../@types/RegisterCredentials.type.ts';
 
@@ -22,7 +21,9 @@ const register = async (payload: RegisterCredentials) => {
 };
 
 const login = async (payload: LoginCredentials) => {
-  const user = await UserModel.findOne({ email: payload.email });
+  const user = await UserModel.findOne({
+    email: payload.email,
+  });
 
   if (!user) {
     throw createHttpError(404, 'User not found');

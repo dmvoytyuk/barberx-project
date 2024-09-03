@@ -1,6 +1,6 @@
 import joi from 'joi';
 
-import type { IUser } from '../@types/User.interface.ts';
+import type { IUser } from '../@types/IUser.interface.ts';
 
 import { UserRole } from '../@types/enums/UserRole.enum.ts';
 

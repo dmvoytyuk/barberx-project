@@ -2,15 +2,20 @@ import createHttpError from 'http-errors';
 
 import type { Controller } from '../@types/Controller.type.ts';
 
-import testToken from '../utils/testToken.ts';
+import validateSession from './sessionHandler/validateSession.ts';
+import { Token } from '../@types/enums/Token.enum.ts';
 
 const authentication: Controller = async (req, _res, next) => {
-  if (!req.session.auth) {
+  const auth = req.session.auth;
+  if (
+    !auth.hasOwnProperty(Token.accessToken) ||
+    !auth.hasOwnProperty(Token.accessTokenValidUntil)
+  ) {
     next(createHttpError(401, 'Unauthorized'));
     return;
   }
 
-  const { authHeader, isBearer, isMatch, isExpired } = testToken(req);
+  const { authHeader, isBearer, isMatch, isExpired } = validateSession(req);
 
   if (!authHeader) {
     next(createHttpError(401, 'Provide Authorization header'));
