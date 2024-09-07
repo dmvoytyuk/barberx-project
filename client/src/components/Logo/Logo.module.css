@@ -2,10 +2,9 @@
   width: max-content;
   height: fit-content;
   margin: 0 auto;
-  padding: 0;
+  padding: 32px 0 0;
   font-family: Limelight, sans-serif;
   font-size: 40px;
   line-height: 1.5;
-  color: white;
   text-transform: uppercase;
 }

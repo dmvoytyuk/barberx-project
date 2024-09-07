@@ -1,4 +1,4 @@
-.homePageLayout {
+.PageLayout {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -7,11 +7,7 @@
   background-size: cover;
 }
 
-.homePageHeader {
-  padding-top: 20px;
-}
-
-.homePageMain {
+.PageMain {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -20,14 +16,6 @@
   height: max-content;
 }
 
-.homePageMainTitle {
-  font-size: 32px;
-  line-height: 1.5;
-  letter-spacing: -0.08em;
-  color: #fff;
-  margin-bottom: 16px;
-}
-
-.homePageFooter {
+.PageFooter {
   width: 100%;
 }
