@@ -2,8 +2,8 @@ import React from "react";
 import styles from "./Layout.module.css";
 
 type LayoutProps = {
-  children: React.ReactElement;
-  backgroundURL: string;
+  children?: React.ReactElement;
+  backgroundURL: string | undefined;
 };
 
 const Layout = ({ children, backgroundURL }: LayoutProps) => {

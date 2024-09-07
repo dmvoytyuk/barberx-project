@@ -7,6 +7,14 @@
   gap: 16px;
 }
 
+.searchBoxTitle {
+  font-size: 32px;
+  line-height: 1.5;
+  letter-spacing: -0.08em;
+  color: #fff;
+  margin-bottom: 16px;
+}
+
 .searchBoxLabel {
   color: #fff;
   font-size: 15px;
