@@ -1,4 +1,9 @@
-import { loginUser, logoutUser, registerUser } from '../services/auth.ts';
+import {
+  loginUser,
+  logoutUser,
+  refreshSession,
+  registerUser,
+} from '../services/auth.ts';
 
 import type { Controller } from '../@types/Controller.ts';
 import type { ObjectId } from 'mongoose';
@@ -34,9 +39,24 @@ export const logoutController: Controller = async (req, res, _next) => {
   if (sessionId) {
     await logoutUser(sessionId);
     removeCookies(res);
-    res.status(204).send({ status: 204, message: 'Successfully logged out' });
+    res.status(204).send();
+    return;
   }
 
   removeCookies(res);
   res.status(204).send();
+};
+
+export const refreshController: Controller = async (req, res, _next) => {
+  const { sessionId, refreshToken } = req.cookies;
+
+  const session = await refreshSession(sessionId, refreshToken);
+
+  addCookies(res, session);
+
+  res.status(200).json({
+    status: 200,
+    message: 'Successfully refreshed user session',
+    data: session.accessToken,
+  });
 };

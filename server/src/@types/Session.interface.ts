@@ -7,8 +7,3 @@ export interface ISession extends Document<ObjectId> {
   accessTokenValidUntil: Date;
   refreshTokenValidUntil: Date;
 }
-
-// export type UserCookies = Pick<
-//   ISession,
-//   'refreshToken' | 'refreshTokenValidUntil'
-// >;

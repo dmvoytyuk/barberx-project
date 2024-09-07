@@ -1,11 +1,11 @@
 import { model, Schema } from 'mongoose';
 
-import { UserRole } from '../../@types/User.ts';
-
 import type { Model } from 'mongoose';
-import type { IUser } from '../../@types/User.ts';
+import type { IUser } from '../../@types/User.interface.ts';
 
-const user = new Schema<IUser>(
+import { UserRole } from '../../@types/enums/UserRole.enum.ts';
+
+const user = new Schema<IUser, Model<IUser>>(
   {
     name: { type: String, required: true },
     email: { type: String, required: true },
@@ -19,4 +19,4 @@ const user = new Schema<IUser>(
   { timestamps: true, versionKey: false }
 );
 
-export const Users: Model<IUser> = model<IUser>('users', user);
+export const User: Model<IUser> = model<IUser>('users', user);

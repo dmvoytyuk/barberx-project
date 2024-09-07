@@ -2,42 +2,40 @@ import createHttpError from 'http-errors';
 
 import type { Controller } from '../@types/Controller.ts';
 
-import { Sessions } from '../db/models/session.ts';
-import { Users } from '../db/models/user.ts';
+import { Session } from '../db/models/session.ts';
+import { User } from '../db/models/user.ts';
 import { logoutUser } from '../services/auth.ts';
 import { removeCookies } from '../utils/handleCookies/removeCookies.ts';
 
 export const authorizationMiddleware: Controller = async (req, res, next) => {
   const authHeader = req.get('Authorization');
   if (!authHeader) {
-    next(createHttpError(401, 'Please, provide Authorization header'));
-    return;
+    return next(createHttpError(401, 'Please, provide Authorization header'));
   }
 
   const [bearer, accessToken] = authHeader.split(' ');
   if (bearer !== 'Bearer' || !accessToken) {
-    next(createHttpError(401, 'Authorization header must be of type Bearer'));
-    return;
+    return next(
+      createHttpError(401, 'Authorization header must be of type Bearer')
+    );
   }
 
-  const session = await Sessions.findOne({ accessToken });
+  const session = await Session.findOne({ accessToken });
   if (!session) {
-    next(createHttpError(401, 'Session not found. Please, log in again'));
-    return;
+    return next(createHttpError(401, 'Session not found. Please, log in'));
   }
 
-  const user = await Users.findOne({ _id: session.userId });
+  const user = await User.findOne({ _id: session.userId });
   if (!user) {
     await logoutUser(session._id);
     removeCookies(res);
-    next(createHttpError(400, 'Please, log in first'));
-    return;
+    return next(createHttpError(400, 'Please, log in'));
   }
 
   const isAccessTokenExpired =
     new Date() > new Date(session.accessTokenValidUntil);
   if (isAccessTokenExpired) {
-    next(
+    return next(
       createHttpError(
         401,
         'Access token expired, please refresh or log in again'

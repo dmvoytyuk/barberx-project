@@ -2,6 +2,7 @@ import { Router } from 'express';
 import {
   loginController,
   logoutController,
+  refreshController,
   registerController,
 } from '../controllers/auth.ts';
 
@@ -22,4 +23,5 @@ authRouter
     validationHandler(loginUserSchema),
     controllerHandler(loginController)
   )
-  .post('/logout', controllerHandler(logoutController));
+  .post('/logout', controllerHandler(logoutController))
+  .post('/refresh', controllerHandler(refreshController));

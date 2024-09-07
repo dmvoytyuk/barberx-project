@@ -1,5 +1,6 @@
-import { ErrorRequestHandler } from 'express';
 import { isHttpError } from 'http-errors';
+
+import type { ErrorRequestHandler } from 'express';
 
 export const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
   if (isHttpError(err)) {
@@ -8,6 +9,7 @@ export const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
       message: err.message,
       data: err,
     });
+    return;
   }
 
   res.status(500).json({

@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "target": "es2016",
+    "target": "ES2016",
     "jsx": "preserve",
-    "module": "commonjs",
+    "module": "Node16",
     "allowJs": true,
     "baseUrl": "src",
     "outDir": "./dist",

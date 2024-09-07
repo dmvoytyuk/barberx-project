@@ -1,4 +1,5 @@
 import type { Document, ObjectId } from 'mongoose';
+import type { UserRole } from './enums/UserRole.enum.ts';
 
 export interface IUser extends Document<ObjectId> {
   name: string;
@@ -11,11 +12,4 @@ export interface IUser extends Document<ObjectId> {
   disliked?: ObjectId[];
 }
 
-export type RegisterCredentials = Pick<IUser, 'name' | 'email' | 'password'>;
 
-export type LoginCredentials = Pick<IUser, 'email' | 'password'>;
-
-export enum UserRole {
-  client = 'client',
-  barber = 'barber',
-}
